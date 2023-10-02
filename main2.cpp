@@ -12,13 +12,14 @@
 using namespace std;
 
 // Main function:  initializes a secret code and compares it against three sample guesses, printing the results.
-// The secret code is also printed for reference.
+// The secret code is also printed for reference. 
 int main() {
     srand(time(0));
 
-    Code secretCode(5, 7); // Initialize secret code with n=5, m=7
+    Code secretCode(5, 7); // Initialize secret code with n=5, m=7 
     secretCode.initializeCode(); 
 
+    cout << "SECRET CODE: " << endl;
     secretCode.display(); // Display the secret code
 
     Code guess1(5, 7);

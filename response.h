@@ -19,11 +19,11 @@ class Response {
         Response(int c, int i);
 
         void setResponses(const Code& guess, const Code& secret);
-        int getCorrect();
-        int getIncorrect();
+        const int getCorrect();
+        const int getIncorrect();
 
         // Operator overloading: for comparison and output
-        friend bool operator==(const Response& lhs, const Response& rhs) const;
+        friend bool operator==(const Response& lhs, const Response& rhs);
         friend ostream& operator<<(ostream& ostr, const Response& attempt);
 
     // Private member functions
@@ -46,19 +46,19 @@ void Response::setResponses(const Code& guess,const Code& secret)
     int incorrect = secret.checkIncorrect(guess);
 }
 
-int Response::getCorrect()
+const int Response::getCorrect()
 {
     return correct;
 }
 
-int Response::getIncorrect()
+const int Response::getIncorrect()
 {
     return incorrect;
 }
 
 bool operator==(const Response& lhs, const Response& rhs)
 {
-    return lhs.getCorrect() == rhs.getCorrect() && lhs.getIncorrect() == rhs.getIncorrect();
+    return lhs.correct == rhs.correct && lhs.incorrect == rhs.incorrect;
 }
 
 ostream& operator<<(ostream& ostr, const Response& attempt)

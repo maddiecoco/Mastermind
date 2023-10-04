@@ -14,26 +14,26 @@ class Mastermind {
     // Public member functions
     public:
         // Default constructor: initializes game with default values n=5 and m=10
-        Mastermind() : gameCode(5, 10) {}
+        Mastermind() : code(5, 10) {}
 
         // Parameter constructor: game settings
-        Mastermind(int n, int m) : gameCode(n, m) {}
+        Mastermind(int n, int m) : code(n, m) {}
         void printSecretCode();
         Code humanGuess(int n, int m);
-        Response getResponse(const Code& guess);
+        const Response getResponse(const Code& guess);
         bool isSolved(const Response& response);
         void playGame();
 
     // Private member function
     private:
         // gameCode function: secret code for the game
-        Code gameCode;
+        Code code;
 };
 
 // printSecretCode function: prints the secret code
 void Mastermind::printSecretCode()
 {
-    gameCode.display();
+    code.display();
 }
 
 // humanGuess function: get user input guess
@@ -58,16 +58,16 @@ Code Mastermind::humanGuess(int n, int m)
 
 
 // getResponse function: generate response based on user input
-Response Mastermind::getResponse(const Code &guess)
+const Response Mastermind::getResponse(const Code &guess)
 {
-    return Response(gameCode.checkCorrect(guess), gameCode.checkIncorrect(guess));
+    return Response(code.checkCorrect(guess), code.checkIncorrect(guess));
 }
 
 
 // isSolved function: checks if user's guess = solved game
 bool Mastermind::isSolved(const Response &guess)
 {
-    Response response = getResponse(gameCode);
+    Response response = getResponse(code);
     return response == guess;
 }
 
@@ -100,16 +100,19 @@ void Mastermind::playGame()
             }
     }
 
-    Mastermind game(length, range);
-    game.gameCode.initializeCode();  // Generate new secret code
-    printSecretCode();
+    Mastermind secret(length, range);
+    secret.code.initializeCode();  // Generate new secret code
+    printSecretCode(); // Print secret code
+
+    bool solved = false; 
+
     while (true)    // Keep looping until game is solved
     {
-    
-        Code guess = humanGuess(length,range);  // Get a guess from the user
-        Response response = getResponse(guess); // Generate response for the guess
+        Mastermind guess(length, range);
+        guess.code = humanGuess(length,range);  // Get a guess from the user
+        Response response = guess.getResponse(secret.code); // Generate response for the guess
         cout << response << '\n';   // Response output
-        if (isSolved(response)) {   // Check if response = solved game
+        if (solved == (isSolved(response))) {   // Check if response = solved game
             cout << "You solved the code! YIPPEE!!\n";
             break;  // Exit loop
         }

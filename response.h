@@ -1,6 +1,8 @@
-// PART B
-// Last edited: Neha - 10/3 1:30PM
-
+// Project 1 for EECE2560
+//Part B
+//
+//Collaborators: Madeline Coco, Neha Joby
+//This file contains the Response class.
 
 #ifndef RESPONSE_H
 #define RESPONSE_H
@@ -39,31 +41,38 @@ Response::Response(int c, int i) {
     incorrect = i;
 }
 
-// Sets response object with the values for the correct and incorrect numbers in the guess
+// Sets response object with the values for the correct and incorrect digits
+// by comparing the guess code to the secret code
 void Response::setResponses(Code& guess, Code& secret)
 {
     correct = secret.checkCorrect(guess);
     incorrect = secret.checkIncorrect(guess);
 }
 
+// Gets the private data member for the number of correct digits
 const int Response::getCorrect()
 {
     return correct;
 }
 
+// Gets the private data member for the number of incorrect digits
 const int Response::getIncorrect()
 {
     return incorrect;
 }
 
+// Overloaded == operator compares 2 response objects and returns 
+// true if they are equal
 bool operator==(const Response& lhs, const Response& rhs)
 {
     return lhs.correct == rhs.correct && lhs.incorrect == rhs.incorrect;
 }
 
-ostream& operator<<(ostream& ostr, const Response& attempt)
+// Overloaded operator << that prints a response, displaying it's 
+// correct and incorrect values
+ostream& operator<<(ostream& ostr, const Response& rhs)
 {
-    ostr << "Correct: " << attempt.correct << "\nIncorrect: " << attempt.incorrect;
+    ostr << "Correct: " << rhs.correct << "\nIncorrect: " << rhs.incorrect;
     return ostr;
 }
 

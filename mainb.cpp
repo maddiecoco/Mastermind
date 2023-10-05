@@ -12,9 +12,9 @@
 
 using namespace std;
 
-// Main function: allows user (codebreaker) to play Mastermind against computer (codemaker).
+// Main function: allows user (codebreaker) to play Mastermind against 
+// computer (codemaker).
 int main() {
-    srand(time(0));
 
     Mastermind mastermind;
     mastermind.playGame();

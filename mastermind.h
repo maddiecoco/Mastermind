@@ -20,8 +20,8 @@ class Mastermind {
         Mastermind(int n, int m) : code(n, m) {}
         void printSecretCode();
         Code humanGuess(int n, int m);
-        const Response getResponse(const Code& guess);
-        bool isSolved(const Response& response);
+        Response getResponse(Code& guess);
+        bool isSolved(Response& response);
         void playGame();
 
     // Private member function
@@ -32,8 +32,13 @@ class Mastermind {
 
 // printSecretCode function: prints the secret code
 void Mastermind::printSecretCode()
-{
-    code.display();
+{   
+    cout << "\nSECRET CODE: ";
+    for(const int i : code.getSequence())
+    {
+        cout << i << " ";
+    }
+    cout << endl;
 }
 
 // humanGuess function: get user input guess
@@ -41,7 +46,7 @@ Code Mastermind::humanGuess(int n, int m)
 {
     vector<int> guessVec(n);
     cout << "Enter your guess (must be an integer from 0 and " << m-1 << "): ";
-    for (int i : guessVec) 
+    for(int i = 0 ; i < n ; i++)
     {
         int guessDigit;
         cin >> guessDigit;   // guess = user input
@@ -50,22 +55,26 @@ Code Mastermind::humanGuess(int n, int m)
             cout << "Guess is out of range, please reenter." << endl;
             cin >> guessDigit;
         }
+        guessVec[i] = guessDigit;
     }
     Code guessCode(n, m);
+
     guessCode.setSequence(guessVec);
     return guessCode;
 }
 
 
 // getResponse function: generate response based on user input
-const Response Mastermind::getResponse(const Code &guess)
+Response Mastermind::getResponse(Code& secret)
 {
-    return Response(code.checkCorrect(guess), code.checkIncorrect(guess));
+    Response newResponse;
+    newResponse.setResponses(code, secret);
+    return newResponse;
 }
 
 
 // isSolved function: checks if user's guess = solved game
-bool Mastermind::isSolved(const Response &guess)
+bool Mastermind::isSolved(Response& guess)
 {
     Response response = getResponse(code);
     return response == guess;
@@ -79,32 +88,32 @@ void Mastermind::playGame()
     // Ask player for length and range
     int length = 0;
     int range = 0;
+
+    cout << "Enter a length for the code (must be > 3):" << endl;
     // Check if the user entered length is long enough
     while (length <= 3){
-        cout << "Enter a length for the code (must be > 3):" << endl;
         cin >> length;
         if (length <= 3)
             {
-                cout << "Noy a valid length, try again";
-                cin >> length;
+                cout << "Not a valid length, try again";
             }
     }
+
+    cout << "Enter a range for the sequence (must be > 4): " << endl;
     // Check if the user entered range is long enough
     while(range <= 4){
-        cout << "Enter a range for the sequence (must be > 4): " << endl;
         cin >> range;
         if (range <= 4)
             {
                 cout << "Not a valid range, try again";
-                cin >> range;
             }
     }
 
     Mastermind secret(length, range);
     secret.code.initializeCode();  // Generate new secret code
-    printSecretCode(); // Print secret code
+    secret.printSecretCode(); // Print secret code
 
-    bool solved = false; 
+    bool solved = true; 
 
     while (true)    // Keep looping until game is solved
     {
@@ -112,7 +121,7 @@ void Mastermind::playGame()
         guess.code = humanGuess(length,range);  // Get a guess from the user
         Response response = guess.getResponse(secret.code); // Generate response for the guess
         cout << response << '\n';   // Response output
-        if (solved == (isSolved(response))) {   // Check if response = solved game
+        if (solved == (secret.isSolved(response))) {   // Check if response = solved game
             cout << "You solved the code! YIPPEE!!\n";
             break;  // Exit loop
         }

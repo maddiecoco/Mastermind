@@ -18,7 +18,7 @@ class Response {
         // Parameter constructor: sets initial values for correct and incorrect
         Response(int c, int i);
 
-        void setResponses(const Code& guess, const Code& secret);
+        void setResponses(Code& guess, Code& secret);
         const int getCorrect();
         const int getIncorrect();
 
@@ -40,10 +40,10 @@ Response::Response(int c, int i) {
 }
 
 // Sets response object with the values for the correct and incorrect numbers in the guess
-void Response::setResponses(const Code& guess,const Code& secret)
+void Response::setResponses(Code& guess, Code& secret)
 {
-    int correct = secret.checkCorrect(guess);
-    int incorrect = secret.checkIncorrect(guess);
+    correct = secret.checkCorrect(guess);
+    incorrect = secret.checkIncorrect(guess);
 }
 
 const int Response::getCorrect()

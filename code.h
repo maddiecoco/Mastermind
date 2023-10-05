@@ -1,4 +1,7 @@
 
+#ifndef CODE_H
+#define CODE_H
+
 #include <iostream>
 #include <vector>
 #include <ctime>
@@ -11,20 +14,20 @@ using namespace std;
 class Code {
 
     // Public member function
-    public:
-        // Constructor
-        Code(int n, int m);
-        void initializeCode();
-        void setSequence(std::vector<int> vec);
-        int checkCorrect(const Code& guess) const;
-        vector<int> getSequence();
-        int checkIncorrect(const Code& guess) const;
-        void display() const;
+public:
+    // Constructor
+    Code(int n, int m);
+    void initializeCode();
+    void setSequence(std::vector<int> vec);
+    int checkCorrect(Code& guess);
+    vector<int> getSequence();
+    int checkIncorrect(Code& guess);
+    void display();
     //Private data members
-    private:
-        int _length;
-        int _range;
-        std::vector<int> sequence;
+private:
+    int _length;
+    int _range;
+    std::vector<int> sequence;
 };
 
 // Code constructor to initialize the code object with n random digits in the range [0, m-1]
@@ -40,19 +43,19 @@ void Code::initializeCode() {
     {
         i = rand() % _range;
     }
-        
+
     for (int & i : sequence)
     {
         i = rand() % (sequence.size());
     }
 }
 
-void Code::setSequence(vector<int> vec) 
+void Code::setSequence(vector<int> vec)
 // Function to set sequence/guess from a code object
 {
     for (int element : vec)
     {
-    sequence.push_back(element);
+        sequence.push_back(element);
     }
 
 }
@@ -64,7 +67,7 @@ vector<int> Code::getSequence()
 }
 
 // checkCorrect function: used to check the number of correct digits in the correct location
-int Code::checkCorrect(const Code& guess) const {
+int Code::checkCorrect(Code& guess) {
     int count = 0;
     for (int i = 0; i < sequence.size(); i++)
         if (sequence[i] == guess.sequence[i])
@@ -73,27 +76,37 @@ int Code::checkCorrect(const Code& guess) const {
 }
 
 // checkIncorrect function: used to check the number of correct digits in the incorrect location
-int Code::checkIncorrect(const Code& guess) const {
+int Code::checkIncorrect(Code& guess) {
     int count = 0;
-    std::vector<bool> counted(sequence.size(), false);
-    for (int i = 0; i < sequence.size(); i++) {
-        for (int j = 0; j < sequence.size(); j++) {
-            if (i != j && !counted[j] && sequence[j] == guess.sequence[i]) {
-                counted[j] = true;
-                count++;
+
+    // Loop through the secret code
+    for (int secret_i = 0; secret_i < _length; secret_i++)
+    { 
+        // Loop through the guess code at every index of the secret code
+        for (int guess_i = 0; guess_i < _length; guess_i++)
+        { 
+            // Check so correct ints at correct location aren't being counted
+            if (sequence[secret_i] == guess.sequence[secret_i])
+            {
                 break;
             }
-        }
+            else if (sequence[secret_i] == guess.sequence[guess_i])
+            {
+                count += 1;
+                // Set counted values out of range, to prevent double counting
+                guess.sequence[guess_i] = _range;
+                break;
+            }
+        } // end guess code for loop
     }
     return count;
 }
 
 // display function to display the code sequence
-void Code::display() const {
+void Code::display() {
     for(const int & i : sequence)
         std::cout << i << " ";
     std::cout << std::endl;
 }
 
-
-
+#endif

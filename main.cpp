@@ -2,6 +2,7 @@
 //
 //Collaborators: Madeline Coco, Neha Joby
 //
+// The main function for part a of project 1. 
 
 #include <iostream>
 #include <vector>
@@ -21,6 +22,8 @@ int main() {
     cout << "SECRET CODE:" << endl;
     secretCode.display(); // Display the secret code
 
+    // Three sample guesses saved as vectors, and then used as the input
+    // for the setSequence function 
     Code guess1(5, 7);
     vector<int> first_try = {5, 0, 3, 2, 6};
     guess1.setSequence(first_try);

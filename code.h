@@ -91,16 +91,30 @@ int Code::checkCorrect(Code& guess)
 int Code::checkIncorrect(Code& guess) 
 {
     int count = 0;
+    
+// Loop through the secret code
+    for (int secret_i = 0; secret_i < _length; secret_i++)
+    { 
 
-    std::vector<bool> counted(sequence.size(), false);
-    for (int i = 0; i < sequence.size(); i++) {
-        for (int j = 0; j < sequence.size(); j++) {
-            if (i != j && !counted[j] && sequence[j] == guess.sequence[i]) {
-                counted[j] = true;
-                count++;
+        // Loop through the guess code at every index of the secret code
+        for (int guess_i = 0; guess_i < _length; guess_i++)
+        { 
+
+            // Check so correct ints at correct location aren't being counted
+            if (sequence[secret_i] == guess.sequence[secret_i])
+            {
                 break;
             }
+            else if (sequence[secret_i] == guess.sequence[guess_i])
+            {
+                count += 1;
+                // Set counted values out of range (prevent counting again)
+                guess.sequence[guess_i] = _range;
+                break;
+            }
+
         }
+
     }
     return count;
 }

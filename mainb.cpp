@@ -2,6 +2,8 @@
 //
 //Collaborators: Madeline Coco, Neha Joby
 //
+//Main function for part b of project 1. Allows the user to fully
+// play through the mastermind game.
 
 #include <iostream>
 #include <vector>
